@@ -11,19 +11,23 @@
   <small id="time"></small>
 
   <script>
-    // Đọc btc_price.json nằm cùng thư mục
-    fetch('btc_price.json')
-      .then(r => r.json())
-      .then(data => {
+    const API = "https://btc-api.<username>.repl.co/btc";
+    
+    async function loadPrice() {
+      try {
+        const data = await fetch(API).then(r => r.json());
         document.getElementById('price').textContent =
           data.btc_usd.toLocaleString('en-US', {style:'currency', currency:'USD'});
         document.getElementById('time').textContent =
           'Cập nhật: ' + new Date(data.time).toLocaleString('vi-VN');
-      })
-      .catch(err => {
-        document.getElementById('price').textContent = 'Không tải được dữ liệu!';
-        console.error(err);
-      });
-  </script>
+      } catch (e) {
+        document.getElementById('price').textContent = 'Lỗi kết nối API!';
+        console.error(e);
+      }
+    }
+    loadPrice();                  // gọi ngay
+    setInterval(loadPrice, 60000); // refresh 60 s
+    </script>
+    
 </body>
 </html>
