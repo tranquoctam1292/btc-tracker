@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Giá Bitcoin realtime</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🪙 Giá Bitcoin (BTC)</h1>
+  <p id="price">Đang tải...</p>
+  <small id="time"></small>
+
+  <script>
+    // Đọc btc_price.json nằm cùng thư mục
+    fetch('btc_price.json')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('price').textContent =
+          data.btc_usd.toLocaleString('en-US', {style:'currency', currency:'USD'});
+        document.getElementById('time').textContent =
+          'Cập nhật: ' + new Date(data.time).toLocaleString('vi-VN');
+      })
+      .catch(err => {
+        document.getElementById('price').textContent = 'Không tải được dữ liệu!';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
